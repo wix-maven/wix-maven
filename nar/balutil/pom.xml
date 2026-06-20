@@ -3,22 +3,22 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.wixtoolset</groupId>
+    <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.11.2-SNAPSHOT</version>
+    <version>3.14.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.wixtoolset.sdk.nar</groupId>
+  <groupId>com.github.wix-maven.sdk.nar</groupId>
   <artifactId>balutil</artifactId>
   <packaging>nar</packaging>
   <name>WiX BalUtil</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.wixtoolset.sdk.nar</groupId>
+      <groupId>com.github.wix-maven.sdk.nar</groupId>
       <artifactId>dutil</artifactId>
-      <version>3.11.2-SNAPSHOT</version>
+      <version>3.14.1-SNAPSHOT</version>
       <type>nar</type>
     </dependency>
   </dependencies>

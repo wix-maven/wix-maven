@@ -3,11 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.wixtoolset</groupId>
+    <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.11.2-SNAPSHOT</version>
+    <version>3.14.1-SNAPSHOT</version>
   </parent>
 
+  <groupId>com.github.wix-maven.sdk</groupId>
   <artifactId>wix-toolset</artifactId>
   <packaging>pom</packaging>
   <name>WiX Toolset Full</name>

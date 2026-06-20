@@ -5,15 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.wixtoolset</groupId>
+    <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.11.2-SNAPSHOT</version>
+    <version>3.14.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>org.wixtoolset.maven</groupId>
   <artifactId>wix-toolset</artifactId>
-  <version>3.11.2-SNAPSHOT</version>
+  <version>3.14.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>WiX Toolset Maven</name>
@@ -21,9 +20,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.wixtoolset.maven</groupId>
+      <groupId>com.github.wix-maven</groupId>
       <artifactId>wix-bootstrap</artifactId>
-      <version>3.11.2-SNAPSHOT</version>
+      <version>3.14.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   
@@ -75,7 +74,6 @@
                   </includes>
                   <excludes>
                     <exclude>Wix*Extension.dll</exclude>
-                    <exclude>Wix*Extension.MSBuild*.dll</exclude>
                     <exclude>Votiv*.dll</exclude>
 					<!-- <exclude>Microsoft.Deployment*.dll</exclude> Unclear on dependency, light seems to need these when linking for burn -->
                   </excludes>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.wixtoolset</groupId>
+  <groupId>com.github.wix-maven</groupId>
   <artifactId>wix-toolset-parent</artifactId>
-  <version>3.11.2-SNAPSHOT</version>
+  <version>3.14.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>WiX Toolset Maven parent/aggregate</name>
@@ -72,13 +74,7 @@ This is a binary artifact capture.</description>
     <url>https://github.com/wixtoolset/issues/issues</url>
     </issueManagement>
   -->
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-  
+
   <properties> <!-- The &Build value seems to change daily... -->
     <wix.downloadPath>src/download</wix.downloadPath>
     <wix.downloadFile>${wix.downloadPath}/wix-binaries.zip</wix.downloadFile>
@@ -109,8 +105,8 @@ This is a binary artifact capture.</description>
           <version>2.7</version>
         </plugin>
         <plugin>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.9</version>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>1.9</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
@@ -122,19 +118,6 @@ This is a binary artifact capture.</description>
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 
   <profiles>
@@ -170,7 +153,8 @@ This is a binary artifact capture.</description>
         <module>nar/wcautil-vc141</module>
       </modules>
       <properties>
-        <nar.test.version>3.0.0</nar.test.version>
+        <nar.test.version>3.10.1</nar.test.version>
+        <skipNar>true</skipNar>
         <nar.src>${project.build.directory}\nar\${project.artifactId}-${project.version}</nar.src>
         <nar.src.noarch>${nar.src}-noarch\include</nar.src.noarch>
         <nar.src.x86>${nar.src}-x86-Windows-msvc-static\lib\x86-Windows-msvc\static</nar.src.x86>
@@ -182,81 +166,26 @@ This is a binary artifact capture.</description>
             <plugin>
               <groupId>com.github.maven-nar</groupId>
               <artifactId>nar-maven-plugin</artifactId>
-              <version>3.0.0</version>
+              <version>3.10.1</version>
             </plugin>
           </plugins>
         </pluginManagement>
       </build>
-    </profile>
-    <profile>
-      <id>npanday</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <modules>
-        <module>npanday/wix</module>
-        <module>npanday/Microsoft.Deployment.Compression</module>
-        <module>npanday/Microsoft.Deployment.Compression.Cab</module>
-        <module>npanday/Microsoft.Deployment.Compression.Zip</module>
-        <module>npanday/Microsoft.Deployment.Resources</module>
-        <module>npanday/Microsoft.Deployment.WindowsInstaller</module>
-        <module>npanday/Microsoft.Deployment.WindowsInstaller.Linq</module>
-        <module>npanday/Microsoft.Deployment.WindowsInstaller.Package</module>
-      </modules>
-      <properties>
-        <npanday.test.version>1.4.0-incubating</npanday.test.version>
-      </properties>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.npanday.plugins</groupId>
-              <artifactId>custom-lifecycle-maven-plugin</artifactId>
-              <version>1.4.0-incubating</version>
-            </plugin>
-            <plugin>
-              <artifactId>maven-antrun-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>prepare-npanday-sdk</id>
-                  <phase>generate-sources</phase>
-                  <goals>
-                    <goal>run</goal>
-                  </goals>
-                  <configuration>
-                    <target name="prepare modules">
-                      <echo>../../${wix.downloadFile}</echo>
-                      <unzip dest="${project.build.directory}" overwrite="false" src="../../${wix.downloadFile}">
-                        <patternset>
-                          <include name="sdk/${project.artifactId}.dll" />
-                          <include name="sdk/${project.artifactId}.xml" />
-                        </patternset>
-                        <mapper>
-                          <mapper type="regexp" from="sdk/(.*)" to="\1" />
-                        </mapper>
-                      </unzip>
-                    </target>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-
     </profile>
     <profile>
       <id>download</id>
       <!-- To update the source
-      Update the download URL property by finding it on the download page at https://github.com/wixtoolset/wix3/releases/
+      Update the download URL property by finding it on the download page at
+      https://github.com/wixtoolset/wix3/releases/
       mvn -N generate-sources -Pdownload -->
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-	  <!-- https://github.com/wixtoolset/wix3/releases/download/wix311rtm/wix311exe.zip -->
-        <wix.downloadURL>https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip</wix.downloadURL>
-        <wix.downloadURL.debug>https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-debug.zip</wix.downloadURL.debug>
+        <wix.downloadURL>
+          https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip</wix.downloadURL>
+        <wix.downloadURL.debug>
+          https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-debug.zip</wix.downloadURL.debug>
       </properties>
       <build>
         <plugins>
@@ -272,8 +201,11 @@ This is a binary artifact capture.</description>
                 <configuration>
                   <target name="download">
                     <mkdir dir="${wix.downloadPath}" />
-                    <get src="${wix.downloadURL}" dest="${wix.downloadFile}" usetimestamp="true" /> <!-- timestamp check doesn't seem to work, downlaods every time -->
-                    <get src="${wix.downloadURL.debug}" dest="${wix.downloadFile.debug}" usetimestamp="true" /> <!-- timestamp check doesn't seem to work, downlaods every time -->
+                    <get src="${wix.downloadURL}" dest="${wix.downloadFile}" usetimestamp="true" /> <!--
+                    timestamp check doesn't seem to work, downlaods every time -->
+                    <get src="${wix.downloadURL.debug}" dest="${wix.downloadFile.debug}"
+                      usetimestamp="true" /> <!-- timestamp check doesn't seem to work, downlaods
+                    every time -->
                   </target>
                 </configuration>
               </execution>
