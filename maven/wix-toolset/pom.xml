@@ -139,7 +139,7 @@
                   <classifier>WixHttpExtension</classifier>
                 </artifact>
                 <artifact>
-                  <file>${zip.unpack}/WixIISExtension.dll</file>
+                  <file>${zip.unpack}/WixIIsExtension.dll</file>
                   <type>wixext</type>
                   <classifier>WixIISExtension</classifier>
                 </artifact>

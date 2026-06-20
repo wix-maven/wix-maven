@@ -57,24 +57,17 @@ This is a binary artifact capture.</description>
   </developers>
 
   <scm>
-    <url>https://github.com/zonski/wix-maven</url>
-    <connection>scm:git:git://github.com/zonski/wix-maven.git</connection>
-    <developerConnection>scm:git:git@github.com:zonski/wix-maven.git</developerConnection>
+    <url>https://github.com/wix-maven/wix-maven</url>
+    <connection>scm:git:git@github.com:wix-maven/wix-maven.git</connection>
+    <developerConnection>scm:git:git@github.com:wix-maven/wix-maven.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/zonski/wix-maven/issues</url>
+    <url>https://github.com/wix-maven/wix-maven/issues</url>
   </issueManagement>
-  <!-- Source
-    SCM https://github.com/wixtoolset/wix3/tree/wix39r2rtm
-    <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/wixtoolset/issues/issues</url>
-    </issueManagement>
-  -->
-
+  
   <properties> <!-- The &Build value seems to change daily... -->
     <wix.downloadPath>src/download</wix.downloadPath>
     <wix.downloadFile>${wix.downloadPath}/wix-binaries.zip</wix.downloadFile>
@@ -89,6 +82,18 @@ This is a binary artifact capture.</description>
     <module>maven/sdk-toolset</module>
   </modules>
   <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <goals>verify</goals>
+          <releaseProfiles>nar</releaseProfiles>
+          <scmCommentPrefix>[release] </scmCommentPrefix>
+        </configuration>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -114,7 +119,7 @@ This is a binary artifact capture.</description>
         </plugin>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.2</version>
+          <version>3.1.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -215,19 +220,26 @@ This is a binary artifact capture.</description>
       </build>
     </profile>
     <profile>
-      <id>sonatype-oss-release</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-          <value>true</value>
-        </property>
-      </activation>
+      <!-- required, used in .github/workflows/sonatype-publish.yml -->
+      <id>sonatypeDeploy</id>
       <build>
         <plugins>
           <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.10.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <tokenAuth>true</tokenAuth>
+              <autoPublish>true</autoPublish>
+              <waitUntil>published</waitUntil>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>3.2.0</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -235,6 +247,12 @@ This is a binary artifact capture.</description>
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>
