@@ -7,12 +7,12 @@
   <parent>
     <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.14.1</version>
+    <version>4.0.6-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>wix-toolset</artifactId>
-  <version>3.14.1</version>
+  <version>4.0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>WiX Toolset Maven</name>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.github.wix-maven</groupId>
       <artifactId>wix-bootstrap</artifactId>
-      <version>3.14.1</version>
+      <version>4.0.6-SNAPSHOT</version>
     </dependency>
   </dependencies>
   
