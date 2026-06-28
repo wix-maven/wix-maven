@@ -7,12 +7,12 @@
   <parent>
     <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.14.1-SNAPSHOT</version>
+    <version>3.14.1</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>sdk-toolset</artifactId>
-  <version>3.14.1-SNAPSHOT</version>
+  <version>3.14.1</version>
   <packaging>jar</packaging>
 
   <name>WiX SDK Toolset Maven</name>

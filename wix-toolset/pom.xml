@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>3.14.1-SNAPSHOT</version>
+    <version>3.14.1</version>
   </parent>
 
   <groupId>com.github.wix-maven.sdk</groupId>
