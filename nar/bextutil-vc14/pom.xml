@@ -10,12 +10,12 @@
   </parent>
 
   <groupId>com.github.wix-maven.sdk.nar</groupId>
-  <artifactId>balutil-vc14</artifactId>
+  <artifactId>bextutil-vc14</artifactId>
   <packaging>nar</packaging>
-  <name>WiX BalUtil (vc14)</name>
+  <name>WiX BextUtil (vc14)</name>
 
   <properties>
-    <wix.native.package.id>wixtoolset.balutil</wix.native.package.id>
+    <wix.native.package.id>wixtoolset.bextutil</wix.native.package.id>
   </properties>
 
   <dependencies>
@@ -55,7 +55,7 @@
         <artifactId>nar-maven-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-          <output>balutil</output>
+          <output>bextutil</output>
         </configuration>
       </plugin>
     </plugins>

@@ -37,6 +37,10 @@ under the License.
     </dependency>
   </dependencies>
 
+  <properties>
+		<compiler.msvc.version>17.0</compiler.msvc.version>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -46,9 +50,7 @@ under the License.
         <extensions>true</extensions>
         <configuration>
           <os>Windows</os>
-          <architecture>x86</architecture>
-          <!-- todo: amd64 x86-->
-          <!-- msvc  9/10/11 -->
+          <architecture>amd64</architecture>
           <linker>
             <name>msvc</name>
             <sysLibSet>msi:shared,Advapi32:shared,User32:shared,Version:shared,Shell32:shared</sysLibSet>

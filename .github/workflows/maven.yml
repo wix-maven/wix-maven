@@ -22,9 +22,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Collect dependency resources
-      run: mvn -N generate-sources -Pdownload
-
     - name: Repackage as Maven artifacts
-      run: mvn install -Pnar
+      run: mvn -B clean install -Pnar
       

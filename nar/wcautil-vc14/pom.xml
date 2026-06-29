@@ -14,6 +14,10 @@
   <packaging>nar</packaging>
   <name>WiX WCAUtil (vc14)</name>
 
+  <properties>
+    <wix.native.package.id>wixtoolset.wcautil</wix.native.package.id>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.github.wix-maven.sdk.nar</groupId>
@@ -28,52 +32,22 @@
       <resource>
         <targetPath>${nar.src.noarch}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/inc</directory>
-        <includes>
-          <include>wcautil.h</include>
-        </includes>
+        <directory>${wix.native.include.dir}</directory>
       </resource>
       <resource>
         <targetPath>${nar.src.x86}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/x86</directory>
+        <directory>${wix.native.x86.dir}</directory>
       </resource>
       <resource>
         <targetPath>${nar.src.x64}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/x64</directory>
+        <directory>${wix.native.x64.dir}</directory>
       </resource>
     </resources>
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target name="prepare modules">
-                <echo>../../${wix.downloadFile}</echo>
-                <unzip dest="${zip.unpack}" overwrite="false" src="../../${wix.downloadFile}">
-                  <patternset>
-                    <include name="sdk/inc/**/*" />
-                  </patternset>
-                </unzip>
-                <unzip dest="${zip.unpack}" overwrite="false" src="../../${wix.downloadFile}">
-                  <patternset>
-                    <include name="sdk/vs*/**/wcautil*" />
-                  </patternset>
-                  <mapper>
-                    <mapper type="regexp" from="^sdk/vs2015/lib/(.*)/(.*\.lib)" to="sdk/\1/\2" />
-                  </mapper>
-                </unzip>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -81,16 +55,7 @@
         <artifactId>nar-maven-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-					<!-- Windows -->
-					<!-- x86 x64 -->
-					<!-- msvc -->
-          <resourcesCopyAOL>false</resourcesCopyAOL>
           <output>wcautil</output>
-          <libraries>
-            <library>
-              <type>static</type>
-            </library>
-          </libraries>
         </configuration>
       </plugin>
     </plugins>
@@ -103,7 +68,6 @@
         <plugins>
           <plugin>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.8</version>
             <configuration>
               <debug>${invoker.debug}</debug>
               <ignoreFailures>false</ignoreFailures>
