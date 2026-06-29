@@ -38,14 +38,6 @@ This is a binary artifact capture.</description>
       </roles>
     </developer>
     <developer>
-      <id>zonski</id>
-      <name>Daniel Zwolenski</name>
-      <email>zonski@gmail.com</email>
-      <roles>
-        <role>Maven Deployer</role>
-      </roles>
-    </developer>
-    <developer>
       <id>GregDomjan</id>
       <name>Greg Domjan</name>
       <roles>
@@ -66,18 +58,8 @@ This is a binary artifact capture.</description>
     <url>https://github.com/wix-maven/wix-maven/issues</url>
   </issueManagement>
   
-  <properties> <!-- The &Build value seems to change daily... -->
-    <wix.downloadPath>src/download</wix.downloadPath>
-    <wix.downloadFile>${wix.downloadPath}/wix-binaries.zip</wix.downloadFile>
-    <wix.downloadFile.debug>${wix.downloadPath}/wix-debug.zip</wix.downloadFile.debug>
-    <zip.unpack>${basedir}/target/unpack</zip.unpack>
-  </properties>
-
   <modules>
-    <module>wix-toolset</module>
     <module>maven/wix-toolset</module>
-    <module>maven/wix-bootstrap</module>
-    <module>maven/sdk-toolset</module>
   </modules>
   <build>
     <plugins>
@@ -109,7 +91,7 @@ This is a binary artifact capture.</description>
         </plugin>
         <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
-          <version>1.9</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
@@ -130,30 +112,10 @@ This is a binary artifact capture.</description>
         <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
-        <module>nar/dutil</module>
-        <module>nar/dutil-vc10</module>
-        <module>nar/dutil-vc11</module>
-        <module>nar/dutil-vc12</module>
         <module>nar/dutil-vc14</module>
-        <module>nar/dutil-vc141</module>
-        <module>nar/balutil</module>
-        <module>nar/balutil-vc10</module>
-        <module>nar/balutil-vc11</module>
-        <module>nar/balutil-vc12</module>
         <module>nar/balutil-vc14</module>
-        <module>nar/balutil-vc141</module>
-        <module>nar/deputil</module>
-        <module>nar/deputil-vc10</module>
-        <module>nar/deputil-vc11</module>
-        <module>nar/deputil-vc12</module>
-        <module>nar/deputil-vc14</module>
-        <module>nar/deputil-vc141</module>
-        <module>nar/wcautil</module>
-        <module>nar/wcautil-vc10</module>
-        <module>nar/wcautil-vc11</module>
-        <module>nar/wcautil-vc12</module>
+        <module>nar/bextutil-vc14</module>
         <module>nar/wcautil-vc14</module>
-        <module>nar/wcautil-vc141</module>
       </modules>
       <properties>
         <nar.test.version>3.10.1</nar.test.version>
@@ -162,58 +124,55 @@ This is a binary artifact capture.</description>
         <nar.src.noarch>${nar.src}-noarch\include</nar.src.noarch>
         <nar.src.x86>${nar.src}-x86-Windows-msvc-static\lib\x86-Windows-msvc\static</nar.src.x86>
         <nar.src.x64>${nar.src}-amd64-Windows-msvc-static\lib\amd64-Windows-msvc\static</nar.src.x64>
+        <wix.native.version>4.0.6</wix.native.version>
+        <wix.native.download.dir>${project.build.directory}\native-nuget</wix.native.download.dir>
+        <wix.native.extract.dir>${project.build.directory}\native-nuget\extract</wix.native.extract.dir>
+        <wix.native.package.file>${wix.native.download.dir}\${wix.native.package.id}.${wix.native.version}.nupkg</wix.native.package.file>
+        <wix.native.package.extract>${wix.native.extract.dir}\${wix.native.package.id}</wix.native.package.extract>
+        <wix.native.include.dir>${wix.native.package.extract}/build/native/include</wix.native.include.dir>
+        <wix.native.x86.dir>${wix.native.package.extract}/build/native/v14/x86</wix.native.x86.dir>
+        <wix.native.x64.dir>${wix.native.package.extract}/build/native/v14/x64</wix.native.x64.dir>
       </properties>
       <build>
         <pluginManagement>
           <plugins>
             <plugin>
-              <groupId>com.github.maven-nar</groupId>
-              <artifactId>nar-maven-plugin</artifactId>
-              <version>3.10.1</version>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-    <profile>
-      <id>download</id>
-      <!-- To update the source
-      Update the download URL property by finding it on the download page at
-      https://github.com/wixtoolset/wix3/releases/
-      mvn -N generate-sources -Pdownload -->
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <wix.downloadURL>
-          https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip</wix.downloadURL>
-        <wix.downloadURL.debug>
-          https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-debug.zip</wix.downloadURL.debug>
-      </properties>
-      <build>
-          <plugins>
-            <plugin>
               <artifactId>maven-antrun-plugin</artifactId>
               <executions>
                 <execution>
-                <id>download and prepare</id>
+                  <id>prepare</id>
                   <phase>generate-sources</phase>
                   <goals>
                     <goal>run</goal>
                   </goals>
                   <configuration>
-                  <target name="download">
-                    <mkdir dir="${wix.downloadPath}" />
-                    <get src="${wix.downloadURL}" dest="${wix.downloadFile}" usetimestamp="true" /> <!--
-                    timestamp check doesn't seem to work, downlaods every time -->
-                    <get src="${wix.downloadURL.debug}" dest="${wix.downloadFile.debug}" usetimestamp="true" /> <!-- timestamp check doesn't seem to work, downlaods
-                    every time -->
+                    <target name="prepare native package" if="wix.native.package.id">
+                      <mkdir dir="${wix.native.download.dir}" />
+                      <mkdir dir="${wix.native.extract.dir}" />
+                      <echo>https://api.nuget.org/v3-flatcontainer/${wix.native.package.id}/${wix.native.version}/${wix.native.package.id}.${wix.native.version}.nupkg</echo>
+                      <get src="https://api.nuget.org/v3-flatcontainer/${wix.native.package.id}/${wix.native.version}/${wix.native.package.id}.${wix.native.version}.nupkg" dest="${wix.native.package.file}" usetimestamp="true" />
+                      <delete dir="${wix.native.package.extract}" quiet="true" />
+                      <unzip dest="${wix.native.package.extract}" overwrite="true" src="${wix.native.package.file}" />
                     </target>
                   </configuration>
                 </execution>
               </executions>
             </plugin>
+            <plugin>
+              <groupId>com.github.maven-nar</groupId>
+              <artifactId>nar-maven-plugin</artifactId>
+              <version>3.10.1</version>
+              <configuration>
+                <resourcesCopyAOL>false</resourcesCopyAOL>
+                <libraries>
+                  <library>
+                    <type>static</type>
+                  </library>
+                </libraries>
+              </configuration>
+            </plugin>
           </plugins>
+        </pluginManagement>
       </build>
     </profile>
     <profile>

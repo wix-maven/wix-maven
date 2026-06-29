@@ -3,7 +3,11 @@
 #include <msiquery.h>
 #include "wcautil.h"
 
+#ifdef _WIN64
+#pragma comment(linker, "/EXPORT:FillListbox=FillListbox")
+#else
 #pragma comment(linker, "/EXPORT:FillListbox=_FillListbox@4")
+#endif
 
 extern "C" UINT __stdcall FillListbox(MSIHANDLE hInstall) {
   HRESULT hResult = WcaInitialize(hInstall, "FillListbox");

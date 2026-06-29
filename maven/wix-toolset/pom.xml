@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,192 +18,70 @@
   <name>WiX Toolset Maven</name>
   <description>Bundle of command line executable tools for building WiX projects for use in Maven Plugins</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.wix-maven</groupId>
-      <artifactId>wix-bootstrap</artifactId>
-      <version>4.0.6-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
-  
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <id>prepare</id>
-            <phase>generate-sources</phase>
+            <id>install-wix-dotnet-tool</id>
+            <phase>generate-resources</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
-              <target name="prepare modules">
-                <echo>../../${wix.downloadFile}</echo>
-                <unzip dest="${zip.unpack}" overwrite="false" src="../../${wix.downloadFile}">
-                  <patternset>
-                    <include name="*" />
-                  </patternset>
-                </unzip>
+              <target>
+                <mkdir dir="${project.build.outputDirectory}" />
+                <!-- Remove any prior installation so a re-run without clean succeeds -->
+                <delete dir="${project.build.outputDirectory}/.store" quiet="true" />
+                <delete file="${project.build.outputDirectory}/wix" quiet="true" />
+                <delete file="${project.build.outputDirectory}/wix.exe" quiet="true" />
+                <exec executable="dotnet" failonerror="true">
+                  <arg value="tool" />
+                  <arg value="install" />
+                  <arg value="--tool-path" />
+                  <arg value="${project.build.outputDirectory}" />
+                  <arg value="wix" />
+                  <arg value="--version" />
+                  <arg value="4.0.6" />
+                  <arg value="--add-source" />
+                  <arg value="https://api.nuget.org/v3/index.json" />
+                  <arg value="--ignore-failed-sources" />
+                </exec>
               </target>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
           <execution>
-            <id>resources</id>
-            <phase>process-resources</phase>
+            <id>install-heat-tool</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>copy-resources</goal>
+              <goal>run</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/classes/bin</outputDirectory>
-              <resources>
-                <resource>
-                  <filtering>false</filtering>
-                  <directory>${zip.unpack}</directory>
-                  <includes>
-                    <include>*.exe</include>
-                    <include>*.exe.config</include>
-                    <include>*.dll</include>
-                    <include>*.cub</include>
-                  </includes>
-                  <excludes>
-                    <exclude>Wix*Extension.dll</exclude>
-                    <exclude>Votiv*.dll</exclude>
-					<!-- <exclude>Microsoft.Deployment*.dll</exclude> Unclear on dependency, light seems to need these when linking for burn -->
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- attaching the extensions, standard format Wix(.*)Extension.dll,
-        should automate this selection -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>${zip.unpack}/WixBalExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixBalExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixComPlusExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixComPlusExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixDependencyExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixDependencyExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixDifxAppExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixDifxAppExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixDirectXExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixDirectXExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixFirewallExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixFirewallExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixGamingExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixGamingExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixHttpExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixHttpExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixIIsExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixIISExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixLuxExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixLuxExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixMsmqExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixMsmqExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixNetFxExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixNetFxExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixPSExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixPSExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixSqlExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixSqlExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixTagExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixTagExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixUIExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixUIExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixUtilExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixUtilExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixVSExtension.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixVSExtension</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixVSExtension.MSBuild12.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixVSExtension.MSBuild12</classifier>
-                </artifact>
-                <artifact>
-                  <file>${zip.unpack}/WixVSExtension.MSBuild14.dll</file>
-                  <type>wixext</type>
-                  <classifier>WixVSExtension.MSBuild14</classifier>
-                </artifact>
-              </artifacts>
+              <target>
+                <!--
+                  WixToolset.Heat is NOT a dotnet tool - it is a regular NuGet package.
+                  Its nupkg (a ZIP) contains heat.exe and dependencies under tools/net472/x64/.
+                  Download the nupkg and flatten-copy heat.exe + DLLs into the output directory
+                  alongside wix.exe so the Maven plugin resolves both tools from the same dir.
+                -->
+                <delete file="${project.build.outputDirectory}/heat.exe" quiet="true" />
+                <get src="https://api.nuget.org/v3-flatcontainer/wixtoolset.heat/4.0.6/wixtoolset.heat.4.0.6.nupkg"
+                     dest="${project.build.directory}/wixtoolset.heat.4.0.6.nupkg"
+                     skipexisting="true" />
+                <!-- Flatten-copy heat.exe + companion DLLs directly into outputDirectory -->
+                <copy todir="${project.build.outputDirectory}" flatten="true" overwrite="true">
+                  <zipfileset src="${project.build.directory}/wixtoolset.heat.4.0.6.nupkg">
+                    <include name="tools/net472/x64/*.exe" />
+                    <include name="tools/net472/x64/*.exe.config" />
+                    <include name="tools/net472/x64/*.dll" />
+                  </zipfileset>
+                </copy>
+              </target>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
 </project>

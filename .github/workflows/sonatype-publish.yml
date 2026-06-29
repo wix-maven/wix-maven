@@ -26,17 +26,11 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Collect dependency resources
-        run: mvn -N -B generate-sources -Pdownload
-
-      - name: Repackage as Maven artifacts
-        run: mvn -B install -Pnar
-        
       - name: Prepare Maven environnement with Java 17 for deployment to Sonatype
         run: export MAVEN_OPTS="--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"
 
       - name: Publish to Apache Maven Central
-        run: mvn -B deploy -PsonatypeDeploy -Pnar 
+        run: mvn -B clean deploy -PsonatypeDeploy -Pnar 
         env:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.NEXUS_PASSWORD }}

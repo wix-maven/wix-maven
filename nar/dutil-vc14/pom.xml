@@ -15,62 +15,31 @@
   <name>WiX DUtil (vc14)</name>
   <description>Utility functions for use in WiX Custom Actions (CA) or Bootstrap Applications (BA)</description>
 
+  <properties>
+    <wix.native.package.id>wixtoolset.dutil</wix.native.package.id>
+  </properties>
+
   <build>
     <resources>
       <resource>
         <targetPath>${nar.src.noarch}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/inc</directory>
-        <includes>
-          <include>*.h</include>
-        </includes>
-        <excludes>
-          <exclude>balutil.h</exclude>
-          <exclude>deputil.h</exclude>
-          <exclude>wcautil.h</exclude>
-        </excludes>
+        <directory>${wix.native.include.dir}</directory>
       </resource>
       <resource>
         <targetPath>${nar.src.x86}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/x86</directory>
+        <directory>${wix.native.x86.dir}</directory>
       </resource>
       <resource>
         <targetPath>${nar.src.x64}</targetPath>
         <filtering>false</filtering>
-        <directory>${zip.unpack}/sdk/x64</directory>
+        <directory>${wix.native.x64.dir}</directory>
       </resource>
     </resources>
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target name="prepare modules">
-                <echo>../../${wix.downloadFile}</echo>
-                <unzip dest="${zip.unpack}" overwrite="false" src="../../${wix.downloadFile}">
-                  <patternset>
-                    <include name="sdk/inc/**/*" />
-                  </patternset>
-                </unzip>
-                <unzip dest="${zip.unpack}" overwrite="false" src="../../${wix.downloadFile}">
-                  <patternset>
-                    <include name="sdk/vs*/**/dutil*" />
-                  </patternset>
-                  <mapper>
-                    <mapper type="regexp" from="^sdk/vs2015/lib/(.*)/(.*\.lib)" to="sdk/\1/\2" />
-                  </mapper>
-                </unzip>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -78,16 +47,7 @@
         <artifactId>nar-maven-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-					<!-- Windows -->
-					<!-- x86 x64 -->
-					<!-- msvc -->
-          <resourcesCopyAOL>false</resourcesCopyAOL>
           <output>dutil</output>
-          <libraries>
-            <library>
-              <type>static</type>
-            </library>
-          </libraries>
         </configuration>
       </plugin>
     </plugins>
