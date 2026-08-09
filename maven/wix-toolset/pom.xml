@@ -43,40 +43,11 @@
                   <arg value="${project.build.outputDirectory}" />
                   <arg value="wix" />
                   <arg value="--version" />
-                  <arg value="4.0.6" />
+                  <arg value="5.0.2" />
                   <arg value="--add-source" />
                   <arg value="https://api.nuget.org/v3/index.json" />
                   <arg value="--ignore-failed-sources" />
                 </exec>
-              </target>
-            </configuration>
-          </execution>
-          <execution>
-            <id>install-heat-tool</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <!--
-                  WixToolset.Heat is NOT a dotnet tool - it is a regular NuGet package.
-                  Its nupkg (a ZIP) contains heat.exe and dependencies under tools/net472/x64/.
-                  Download the nupkg and flatten-copy heat.exe + DLLs into the output directory
-                  alongside wix.exe so the Maven plugin resolves both tools from the same dir.
-                -->
-                <delete file="${project.build.outputDirectory}/heat.exe" quiet="true" />
-                <get src="https://api.nuget.org/v3-flatcontainer/wixtoolset.heat/4.0.6/wixtoolset.heat.4.0.6.nupkg"
-                     dest="${project.build.directory}/wixtoolset.heat.4.0.6.nupkg"
-                     skipexisting="true" />
-                <!-- Flatten-copy heat.exe + companion DLLs directly into outputDirectory -->
-                <copy todir="${project.build.outputDirectory}" flatten="true" overwrite="true">
-                  <zipfileset src="${project.build.directory}/wixtoolset.heat.4.0.6.nupkg">
-                    <include name="tools/net472/x64/*.exe" />
-                    <include name="tools/net472/x64/*.exe.config" />
-                    <include name="tools/net472/x64/*.dll" />
-                  </zipfileset>
-                </copy>
               </target>
             </configuration>
           </execution>

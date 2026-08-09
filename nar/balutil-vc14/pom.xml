@@ -15,7 +15,7 @@
   <name>WiX BalUtil (vc14)</name>
 
   <properties>
-    <wix.native.package.id>wixtoolset.balutil</wix.native.package.id>
+    <wix.native.package.id>wixtoolset.bootstrapperapplicationapi</wix.native.package.id>
   </properties>
 
   <dependencies>

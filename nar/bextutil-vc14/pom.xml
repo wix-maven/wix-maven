@@ -15,7 +15,7 @@
   <name>WiX BextUtil (vc14)</name>
 
   <properties>
-    <wix.native.package.id>wixtoolset.bextutil</wix.native.package.id>
+    <wix.native.package.id>wixtoolset.bootstrapperextensionapi</wix.native.package.id>
   </properties>
 
   <dependencies>

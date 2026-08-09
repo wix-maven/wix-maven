@@ -50,6 +50,10 @@ GitHub Actions note:
 
 The WiX 4 vc14 native artifacts (`dutil-vc14`, `balutil-vc14`, `bextutil-vc14`, `wcautil-vc14`) stage headers and libraries from the corresponding `WixToolset.*` NuGet packages during `generate-sources`.
 
+As of Wix5 BootstrapperApplicationApi, BootstrapperExtensionApi yield `balutil` and `bextutil`  headers and libraries respectively.
+
+Note: nuget package names should be recorded in lowercase for nuget v3 flatcontainer API usage.
+
 For integration tests requires
 
 * local install of msvc compiler on path
