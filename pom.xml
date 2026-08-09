@@ -4,7 +4,7 @@
 
   <groupId>com.github.wix-maven</groupId>
   <artifactId>wix-toolset-parent</artifactId>
-  <version>4.0.6</version>
+  <version>5.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>WiX Toolset Maven parent/aggregate</name>
