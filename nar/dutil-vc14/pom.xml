@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.github.wix-maven</groupId>
     <artifactId>wix-toolset-parent</artifactId>
-    <version>5.0.2</version>
+    <version>6.0.2-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 

@@ -4,7 +4,7 @@
 
   <groupId>com.github.wix-maven</groupId>
   <artifactId>wix-toolset-parent</artifactId>
-  <version>5.0.2</version>
+  <version>6.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>WiX Toolset Maven parent/aggregate</name>
@@ -124,7 +124,7 @@ This is a binary artifact capture.</description>
         <nar.src.noarch>${nar.src}-noarch\include</nar.src.noarch>
         <nar.src.x86>${nar.src}-x86-Windows-msvc-static\lib\x86-Windows-msvc\static</nar.src.x86>
         <nar.src.x64>${nar.src}-amd64-Windows-msvc-static\lib\amd64-Windows-msvc\static</nar.src.x64>
-        <wix.native.version>5.0.2</wix.native.version>
+        <wix.native.version>6.0.2</wix.native.version>
         <wix.native.download.dir>${project.build.directory}\native-nuget</wix.native.download.dir>
         <wix.native.extract.dir>${project.build.directory}\native-nuget\extract</wix.native.extract.dir>
         <wix.native.package.file>${wix.native.download.dir}\${wix.native.package.id}.${wix.native.version}.nupkg</wix.native.package.file>
